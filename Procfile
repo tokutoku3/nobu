@@ -1,1 +1,1 @@
-worker: node bin/botkit
+web: bin/botkit
