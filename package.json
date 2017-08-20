@@ -3,6 +3,10 @@
   "version": "0.5.5",
   "description": "Building blocks for Building Bots",
   "main": "lib/Botkit.js",
+  "engines": {
+    "node": "7.1.0",
+    "npm": "3.10.9"
+  },
   "dependencies": {
     "botkit": "^0.5.7"
   },
