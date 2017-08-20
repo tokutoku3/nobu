@@ -4,9 +4,9 @@
   "description": "Building blocks for Building Bots",
   "main": "lib/Botkit.js",
   "dependencies": {
+    "botkit": "^0.5.7"
   },
   "devDependencies": {
-    "botkit": "^0.5.7",
     "cron": "^1.2.1",
     "moment": "^2.18.1",
     "node-trello": "^1.2.1"
