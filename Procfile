@@ -1,1 +1,1 @@
-web: bin/botkit
+worker: node bot.js
