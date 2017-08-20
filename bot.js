@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 var Botkit = require('botkit');
 var Fs = require('fs');
 var Path = require('path');
