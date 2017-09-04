@@ -8,8 +8,9 @@ var moment = require('moment');
  */
 controller.hears(['trello_list_id'], ['direct_message', 'direct_mention', 'mention'], function(bot, message) {
     var trello = new Trello(process.env.TRELLO_APPLICATION_KEY, process.env.TRELLO_USER_TOKEN);
+    var boardId = process.env.TRELLO_BOARD_ID;
 
-    trello.get('1/boards/9iLCpyg3/lists', function(err, data) {
+    trello.get('1/boards/' + boardId + '/lists', function(err, data) {
         if (err) {
             throw err;
         }
