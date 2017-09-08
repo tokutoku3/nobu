@@ -1,12 +1,22 @@
 {
-  "name": "botkit",
-  "version": "0.5.5",
-  "description": "Building blocks for Building Bots",
-  "main": "lib/Botkit.js",
+  "name": "nobu",
+  "version": "0.0.1",
+  "description": "slackbot for home",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "ncu": "ncu"
+  },
   "engines": {
     "node": "7.1.0",
     "npm": "3.10.9"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tokutoku3/nobu.git"
+  },
+  "author": "tokutoku3",
+  "license": "MIT",
   "dependencies": {
     "botkit": "^0.5.7"
   },
@@ -14,8 +24,5 @@
     "cron": "^1.2.1",
     "moment": "^2.18.1",
     "node-trello": "^1.2.1"
-  },
-  "scripts": {
-  },
-  "license": "MIT"
+  }
 }
