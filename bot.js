@@ -1,24 +1,24 @@
-var Botkit = require('botkit');
-var Fs = require('fs');
-var Path = require('path');
+const Botkit = require('botkit');
+const Fs = require('fs');
+const Path = require('path');
 
 controller = Botkit.slackbot({
     debug: false
 });
 
-var bot = controller.spawn({
+const bot = controller.spawn({
     token: process.env.NOBU_TOKEN
 }).startRTM();
 
 // init cron
 require('./cron/wakeup')(bot);
 
-var load = function(path, file) {
-    var ext = Path.extname(file);
-    var full = Path.join(path, Path.basename(file, ext));
+const load = (path, file) => {
+    let ext = Path.extname(file);
+    let full = Path.join(path, Path.basename(file, ext));
 
     try {
-        var script = require(full);
+        let script = require(full);
         if (typeof script === 'function') {
             script(this);
         }
@@ -27,9 +27,9 @@ var load = function(path, file) {
     }
 };
 
-var path = Path.resolve('.', 'scripts');
+let path = Path.resolve('.', 'scripts');
 
 // load ./scripts
-Fs.readdirSync(path).sort().forEach(function(file) {
+Fs.readdirSync(path).sort().forEach((file) => {
     load(path, file);
 });

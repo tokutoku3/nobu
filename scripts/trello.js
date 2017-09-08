@@ -1,23 +1,23 @@
 // @link https://developers.trello.com/v1.0/reference
-var Trello = require('node-trello');
-var moment = require('moment');
+const Trello = require('node-trello');
+const moment = require('moment');
 
 /**
  * 確認用
  * listのidを一覧で表示する
  */
-controller.hears(['trello_list_id'], ['direct_message', 'direct_mention', 'mention'], function(bot, message) {
-    var trello = new Trello(process.env.TRELLO_APPLICATION_KEY, process.env.TRELLO_USER_TOKEN);
-    var boardId = process.env.TRELLO_BOARD_ID;
+controller.hears(['trello_list_id'], ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
+    const trello = new Trello(process.env.TRELLO_APPLICATION_KEY, process.env.TRELLO_USER_TOKEN);
+    const boardId = process.env.TRELLO_BOARD_ID;
 
-    trello.get('1/boards/' + boardId + '/lists', function(err, data) {
+    trello.get(`1/boards/${boardId}/lists`, (err, data) => {
         if (err) {
             throw err;
         }
 
-        var list = '```\n';
-        data.forEach(function(d) {
-            list += d.name + ': ' + d.id + '\n';
+        let list = '```\n';
+        data.forEach((d) => {
+            list += `${d.name}: ${d.id}\n`;
         });
         list += '```\n';
 
@@ -28,16 +28,16 @@ controller.hears(['trello_list_id'], ['direct_message', 'direct_mention', 'menti
 /**
  * 冷蔵庫内の在庫確認
  */
-controller.hears(['冷蔵庫*'], ['direct_message', 'direct_mention', 'mention'], function(bot, message) {
-    var trello = new Trello(process.env.TRELLO_APPLICATION_KEY, process.env.TRELLO_USER_TOKEN);
-    var foodsListId = process.env.TRELLO_FOODS_LIST_ID;
-    var seasoningListId = process.env.TRELLO_SEASONING_LIST_ID;
-    var instantListId = process.env.TRELLO_INSTANT_LIST_ID;
+controller.hears(['冷蔵庫*'], ['direct_message', 'direct_mention', 'mention'], (bot, message) => {
+    const trello = new Trello(process.env.TRELLO_APPLICATION_KEY, process.env.TRELLO_USER_TOKEN);
+    const foodsListId = process.env.TRELLO_FOODS_LIST_ID;
+    const seasoningListId = process.env.TRELLO_SEASONING_LIST_ID;
+    const instantListId = process.env.TRELLO_INSTANT_LIST_ID;
 
     bot.reply(message, '食料の備蓄はこんなかんじじゃぞ！');
 
     // 食材一覧
-    trello.get('1/lists/' + foodsListId + '/cards', function(err, data) {
+    trello.get(`1/lists/${foodsListId}/cards`, (err, data) => {
         if (err) {
             throw err;
         }
@@ -45,7 +45,7 @@ controller.hears(['冷蔵庫*'], ['direct_message', 'direct_mention', 'mention']
     });
 
     // 調味料一覧
-    trello.get('1/lists/' + seasoningListId + '/cards', function(err, data) {
+    trello.get(`1/lists/${seasoningListId}/cards`, (err, data) => {
         if (err) {
             throw err;
         }
@@ -53,7 +53,7 @@ controller.hears(['冷蔵庫*'], ['direct_message', 'direct_mention', 'mention']
     });
 
     // インスタント一覧
-    trello.get('1/lists/' + instantListId + '/cards', function(err, data) {
+    trello.get(`1/lists/${instantListId}/cards`, (err, data) => {
         if (err) {
             throw err;
         }
@@ -64,17 +64,17 @@ controller.hears(['冷蔵庫*'], ['direct_message', 'direct_mention', 'mention']
 /**
  * 渡された一覧から在庫名と期限の一覧を作成して返す
  *
- * @param {string} title 返却地にセットするタイトル
- * @param {array} list Trelloのリストから取得したカード一覧
- * @returns {string}
+ * @param {String} title 返却地にセットするタイトル
+ * @param {Array} list Trelloのリストから取得したカード一覧
+ * @returns {String}
  */
 function createStockList(title, list) {
-    var stock = '```\n';
-    list.forEach(function(data) {
-        var due = !!data.badges.due ? moment(data.badges.due).format('YYYY-MM-DD') : '-';
-        stock += data.name + ': ' + due + '\n';
+    let stock = '```\n';
+    list.forEach((data) => {
+        let due = !!data.badges.due ? moment(data.badges.due).format('YYYY-MM-DD') : '-';
+        stock += `${data.name}: ${due}\n`;
     });
     stock += '```\n';
 
-    return title + '\n' + stock;
+    return `${title}\n${stock}`;
 }
