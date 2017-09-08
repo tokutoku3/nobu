@@ -1,15 +1,15 @@
-var CronJob = require('cron').CronJob;
-var Trello = require('node-trello');
-var moment = require('moment');
+const CronJob = require('cron').CronJob;
+const Trello = require('node-trello');
+const moment = require('moment');
 
-var CHANNEL = 'refrigerator';
+const CHANNEL = 'refrigerator';
 
 /**
  * cron定義
  */
-module.exports = function(bot) {
+module.exports = (bot) => {
 
-    new CronJob('0 30 19 * * *', function() {
+    new CronJob('0 30 19 * * *', () => {
         bot.say({
             text: 'ここ2週間くらいで切れそうな食材があるぞ！',
             channel: CHANNEL
@@ -20,14 +20,14 @@ module.exports = function(bot) {
     /**
      * 賞味期限が切れそうな在庫の一覧をslackに通知する。
      */
-    function getOldItems() {
-        var trello = new Trello(process.env.TRELLO_APPLICATION_KEY, process.env.TRELLO_USER_TOKEN);
-        var foodsListId = process.env.TRELLO_FOODS_LIST_ID;
-        var seasoningListId = process.env.TRELLO_SEASONING_LIST_ID;
-        var instantListId = process.env.TRELLO_INSTANT_LIST_ID;
+    let getOldItems = () => {
+        const trello = new Trello(process.env.TRELLO_APPLICATION_KEY, process.env.TRELLO_USER_TOKEN);
+        const foodsListId = process.env.TRELLO_FOODS_LIST_ID;
+        const seasoningListId = process.env.TRELLO_SEASONING_LIST_ID;
+        const instantListId = process.env.TRELLO_INSTANT_LIST_ID;
 
         // 食材一覧
-        trello.get('1/lists/' + foodsListId + '/cards', function(err, data) {
+        trello.get(`1/lists/${foodsListId}/cards`, (err, data) => {
             if (err) {
                 throw err;
             }
@@ -38,7 +38,7 @@ module.exports = function(bot) {
         });
 
         // 調味料一覧
-        trello.get('1/lists/' + seasoningListId + '/cards', function(err, data) {
+        trello.get(`1/lists/${seasoningListId}/cards`, (err, data) => {
             if (err) {
                 throw err;
             }
@@ -49,7 +49,7 @@ module.exports = function(bot) {
         });
 
         // インスタント一覧
-        trello.get('1/lists/' + instantListId + '/cards', function(err, data) {
+        trello.get(`1/lists/${instantListId}/cards`, (err, data) => {
             if (err) {
                 throw err;
             }
@@ -58,7 +58,7 @@ module.exports = function(bot) {
                 channel: CHANNEL
             });
         });
-    }
+    };
 
     /**
      * 渡された一覧から期限が切れそうな在庫の一覧を作成して返す
@@ -67,22 +67,22 @@ module.exports = function(bot) {
      * @param {Array} list Trelloのリストから取得したカード一覧
      * @returns {String}
      */
-    function createOldList(title, list) {
-        var filter = moment().add(14, 'days');
-        var stock = '';
+    let createOldList = (title, list) => {
+        let filter = moment().add(14, 'days');
+        let stock = '';
 
-        list.forEach(function(data) {
+        list.forEach((data) => {
             if (!!data.badges.due === false) {
                 return;
             }
 
-            var due = moment(data.badges.due);
+            let due = moment(data.badges.due);
             if (filter.diff(due) > 0) {
-                stock += data.name + ': ' + due.format('YYYY-MM-DD') + '\n';
+                stock += `${data.name}: ${due.format('YYYY-MM-DD')}\n`;
             }
         });
 
-        var result = '';
+        let result = '';
         if (stock) {
             result = title + '\n```\n' + stock + '```\n';
         }
