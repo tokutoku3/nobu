@@ -18,7 +18,8 @@
   "author": "tokutoku3",
   "license": "MIT",
   "dependencies": {
-    "botkit": "^0.5.7"
+    "botkit": "^0.5.7",
+    "cheerio-httpcli": "^0.7.0"
   },
   "devDependencies": {
     "cron": "^1.2.1",
