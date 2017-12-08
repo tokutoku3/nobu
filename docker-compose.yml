@@ -1,0 +1,12 @@
+version: "2"
+
+services:
+  bot:
+    image: "node:9.2.0-alpine"
+    user: "node"
+    working_dir: /home/node/nobu
+    env_file:
+      - ./.env
+    volumes:
+      - .:/home/node/nobu
+    command: npm run start
